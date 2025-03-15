@@ -1,26 +1,43 @@
-CREATE TABLE Units (
-    unit_id SERIAL PRIMARY KEY,
-    unit_name VARCHAR(255) NOT NULL,
-    unit_type VARCHAR(100),
-    location VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+@startuml
 
-CREATE TABLE Positions (
-    position_id SERIAL PRIMARY KEY,
-    position_name VARCHAR(255) NOT NULL,
-    rank VARCHAR(100) NOT NULL
-);
+entity "Підрозділи" as Units {
+    * unit_id : INT [PK]
+    --
+    * Назва : TEXT
+}
 
-CREATE TABLE Personnel (
-    personnel_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    birth_date DATE NOT NULL,
-    rank VARCHAR(50) NOT NULL,
-    unit_id INT REFERENCES Units(unit_id) ON DELETE SET NULL,
-    position_id INT REFERENCES Positions(position_id) ON DELETE SET NULL,
-    enlistment_date DATE NOT NULL,
-    status VARCHAR(50) CHECK (status IN ('active', 'reserve', 'retired')) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+entity "Техніка" as Equipment {
+    * equipment_id : INT [PK]
+    --
+    * Тип : TEXT
+    * Стан : TEXT
+    * Дата_обслуговування : DATE
+    --
+    unit_id : INT [FK]
+}
+
+entity "Маршрути" as Routes {
+    * route_id : INT [PK]
+    --
+    * Назва : TEXT
+    * Довжина : INT
+    --
+    equipment_id : INT [FK]
+}
+
+entity "Особовий склад" as Personnel {
+    * personnel_id : INT [PK]
+    --
+    * Ім_я : TEXT
+    * Прізвище : TEXT
+    * Ранг : TEXT
+    * Роль : TEXT
+    --
+    unit_id : INT [FK]
+}
+
+Units ||--o{ Equipment : "Має"
+Equipment ||--o{ Routes : "Виконує"
+Units ||--o{ Personnel : "Містить"
+
+@enduml
