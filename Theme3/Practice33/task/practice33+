@@ -1,0 +1,37 @@
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+# Генеруємо штучний набір даних
+np.random.seed(42)
+num_samples = 500
+
+# Числові ознаки
+num_features = pd.DataFrame({
+    'feature1': np.random.uniform(10, 100, num_samples),
+    'feature2': np.random.uniform(1, 50, num_samples),
+    'feature3': np.random.uniform(5, 75, num_samples)
+})
+
+# Категоріальні ознаки
+cat_features = pd.DataFrame({
+    'category1': np.random.choice(['A', 'B', 'C'], num_samples),
+    'category2': np.random.choice(['X', 'Y'], num_samples)
+})
+
+# Цільова змінна
+target = num_features['feature1'] * 0.5 + num_features['feature2'] * 2 + np.random.normal(0, 10, num_samples)
+
+# Об'єднуємо все в один датафрейм
+df = pd.concat([num_features, cat_features], axis=1)
+df['target'] = target
+
+# Відображаємо частину набору даних
+import ace_tools as tools
+tools.display_dataframe_to_user(name="Generated Dataset", dataframe=df)
