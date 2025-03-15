@@ -1,0 +1,26 @@
+CREATE TABLE Units (
+    unit_id SERIAL PRIMARY KEY,
+    unit_name VARCHAR(255) NOT NULL,
+    unit_type VARCHAR(100),
+    location VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Positions (
+    position_id SERIAL PRIMARY KEY,
+    position_name VARCHAR(255) NOT NULL,
+    rank VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Personnel (
+    personnel_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    birth_date DATE NOT NULL,
+    rank VARCHAR(50) NOT NULL,
+    unit_id INT REFERENCES Units(unit_id) ON DELETE SET NULL,
+    position_id INT REFERENCES Positions(position_id) ON DELETE SET NULL,
+    enlistment_date DATE NOT NULL,
+    status VARCHAR(50) CHECK (status IN ('active', 'reserve', 'retired')) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
