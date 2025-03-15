@@ -60,7 +60,7 @@ mae_lin = mean_absolute_error(y_test, y_pred_lin)
 mse_lin = mean_squared_error(y_test, y_pred_lin)
 r2_lin = r2_score(y_test, y_pred_lin)
 
-# 7. Random Forest Regressor
+# 7. Random Forest Regressor (завершений код)
 rf_pipeline = Pipeline([
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
